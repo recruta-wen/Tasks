@@ -1,0 +1,22 @@
+import React from "react"
+import { Text, View, StyleSheet } from "react-native"
+
+export default props =>{
+    return(
+        <View style={styles.container}>
+            <Text>{props.description}</Text>
+            <Text>{props.estimateAt + ""}</Text>
+            <Text>{props.doneAt + ""}</Text>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container:{
+        flexDirection: "row",
+        borderColor: "#AAA",
+        borderBottomWidth: 1,
+        alignItems: "center",
+        paddingVertical: 20
+    }
+})
