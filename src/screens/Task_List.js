@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Text, ImageBackground } from "react-native"
+
 import moment from "moment"
 
 import today_Image from "../../assets/imgs/today.jpg"
