@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Text, ImageBackground } from "react-native"
+import { StyleSheet, View, Text, ImageBackground, FlatList } from "react-native"
 
 import moment from "moment"
 
@@ -9,7 +9,40 @@ import Task from "../components/Task"
 
 import "moment/locale/pt-br"
 
-export default class TaskList extends Component {
+export default class Task_List extends Component {
+
+    state = {
+        tasks: [{
+            id: Math.random(),
+            description: "Comprar jogo GTA 6",
+            estimate_at: new Date(),
+            done_at: new Date()
+        },
+        {
+            id: Math.random(),
+            description: "Jogar GTA 6",
+            estimate_at: moment(new Date()).add(5, "days"),
+            done_at: null
+        },
+        {
+            id: Math.random(),
+            description: "Levar o carro no mêcanico",
+            estimate_at: moment(new Date()).add(10, "days"),
+            done_at: null
+        }]
+    }
+
+    toggle_task = task_id => {
+        const tasks = [...this.state.tasks]
+        tasks.forEach(task => {
+            if (task.id === task_id) {
+                task.done_at = task.done_at ? null : new Date()
+            }
+        })
+
+        this.setState({ tasks })
+    }
+
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
@@ -21,8 +54,27 @@ export default class TaskList extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.taskList}>
-                    <Task description={"Comprar jogo GTA 6"} estimateAt={new Date()} doneAt={new Date()} />
-                    <Task description={"Jogar GTA 6"} estimateAt={new Date()} doneAt={null} />
+                    <FlatList data={this.state.tasks}
+                        keyExtractor={item => `${item.id}`}
+                        renderItem={({ item }) => <Task{...item} toggle_task={this.toggle_task} />} />
+                    {/* <Task description={"Comprar jogo GTA 6"} estimate_at={new Date()} done_at={new Date()} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} />
+                    <Task description={"Jogar GTA 6"} estimate_at={new Date()} done_at={null} /> */}
                 </View>
             </View>
         )
