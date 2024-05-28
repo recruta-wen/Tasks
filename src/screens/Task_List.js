@@ -1,5 +1,6 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Text, ImageBackground, FlatList } from "react-native"
+import { StyleSheet, View, Text, ImageBackground, FlatList, TouchableOpacity, Platform} from "react-native"
+import Icon from "react-native-vector-icons/FontAwesome6"
 
 import moment from "moment"
 
@@ -12,6 +13,7 @@ import "moment/locale/pt-br"
 export default class Task_List extends Component {
 
     state = {
+        show_done_task: true,
         tasks: [{
             id: Math.random(),
             description: "Comprar jogo GTA 6",
@@ -32,6 +34,10 @@ export default class Task_List extends Component {
         }]
     }
 
+    toggle_filter = () =>{
+        this.setState({ show_done_task: !this.state.show_done_task })
+    }
+
     toggle_task = task_id => {
         const tasks = [...this.state.tasks]
         tasks.forEach(task => {
@@ -48,6 +54,9 @@ export default class Task_List extends Component {
         return (
             <View style={styles.container}>
                 <ImageBackground source={today_Image} style={styles.background}>
+                <View style={styles.icon_bar}>
+
+                </View>
                     <View style={styles.titleBar}>
                         <Text style={styles.title}>Hoje</Text>
                         <Text style={styles.subTitle}>{today}</Text>
@@ -108,6 +117,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 20,
         marginBottom: 30
+    },
+    icon_bar:{
+        flexDirection: 'row'
     },
 
 })
