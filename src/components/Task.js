@@ -2,9 +2,17 @@ import React from "react"
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native"
 import moment from "moment"
 import 'moment/locale/pt-br'
-import { Icon } from "react-native-vector-icons/FontAwesome6"
+import Icon from "react-native-vector-icons/FontAwesome6"
 
 export default props => {
+    const date = props.done_at != null ? props.done_at : props.estimate_at
+    const formated_date = moment(date).format('dddd, DD [de] MMMM')
+    // if(props.done_at != null){
+    //     date = props.done_at
+    // }else{
+    //     date = props.estimate_at
+    // }
+
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={() => alert("Olá")}>
@@ -14,8 +22,7 @@ export default props => {
             </TouchableWithoutFeedback>
             <View>
                 <Text style={styles.desc}>{props.description}</Text>
-                <Text style={styles.date}>{props.estimate_at + ""}</Text>
-                <Text style={styles.date}>{props.done_at + ""}</Text>
+                <Text style={styles.date}>{formated_date}</Text>
             </View>
         </View>
     )
@@ -25,7 +32,7 @@ function get_check_view(done_at) {
     if (done_at != null) {
         return (
             <View style={styles.done}>
-                {/* <Icon name="check" size={20}></Icon> */}
+                <Icon name="check" size={20} color="#FFF"></Icon>
             </View>
         )
     } else {
