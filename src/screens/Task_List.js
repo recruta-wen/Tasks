@@ -13,14 +13,20 @@ export default class Task_List extends Component {
     state = {
         tasks: [{
             id: Math.random(),
-            description: "Terminar TCC",
+            description: "Tarefa 1",
             estimate_at: moment(new Date()),
             done_at: moment(new Date())
         },
         {
             id: Math.random(),
-            description: "Apresentar TCC",
-            estimate_at: moment(new Date()).add(60, "days"),
+            description: "Tarefa 2",
+            estimate_at: moment(new Date()).add(7, "days"),
+            done_at: null
+        },
+        {
+            id: Math.random(),
+            description: "Tarefa 3",
+            estimate_at: moment(new Date()).add(14, "days"),
             done_at: null
         }]
     }
