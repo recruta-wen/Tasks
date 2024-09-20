@@ -85,24 +85,6 @@ export default class Task_List extends Component {
                     <FlatList data={this.state.tarefas_visiveis}
                         keyExtractor={item => `${item.id}`}
                         renderItem={({ item }) => <Task{...item} alternar_tarefa={this.alternar_tarefa} />} />
-                    {/* <Task descricao={"Comprar jogo GTA 6"} data_estimada={new Date()} data_conclusao={new Date()} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} />
-                    <Task descricao={"Jogar GTA 6"} data_estimada={new Date()} data_conclusao={null} /> */}
                 </View>
             </View>
         )
