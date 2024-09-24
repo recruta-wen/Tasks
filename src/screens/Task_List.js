@@ -14,6 +14,7 @@ import "moment/locale/pt-br"
 export default class Task_List extends Component {
 
     state = {
+        mostrar_tela_add: false,
         mostra_tarefas_concluidas: true,
         tarefas_visiveis: [],
         tarefas: [{
@@ -67,11 +68,18 @@ export default class Task_List extends Component {
         this.setState({ tarefas }, this.filtro_tarefas)
     }
 
+    alternar_tela = () => {
+        this.setState({mostrar_tela_add: !this.state.mostrar_tela_add})
+    }
+
     render() {
         const data_hoje = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
             <View style={styles.principal}>
-                <Add_Tarefa/>
+                <Add_Tarefa
+                    visivel ={this.state.mostrar_tela_add}
+                    cancelar ={this.alternar_tela}
+                />
                 <ImageBackground source={hoje_imagem} style={styles.fundo}>
                     <View style={styles.barra_icone}>
                         <TouchableOpacity onPress={this.alternar_filtro}>
@@ -88,6 +96,9 @@ export default class Task_List extends Component {
                         keyExtractor={item => `${item.id}`}
                         renderItem={({ item }) => <Task{...item} alternar_tarefa={this.alternar_tarefa} />} />
                 </View>
+                <TouchableOpacity style={styles.botao_add}>
+                    <Icon name='plus' size={20} color='#FFF'></Icon>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -125,5 +136,16 @@ const styles = StyleSheet.create({
         marginTop: 50,
         justifyContent: 'flex-end'
     },
+    botao_add:{
+        position: 'absolute',
+        right: 30,
+        bottom: 30,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#B13B44',
+        jsutfyContent: 'Center',
+        alignItems: 'center'
+    }
 
 })
