@@ -1,43 +1,44 @@
 import React from "react"
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native"
-import moment from "moment"
-import 'moment/locale/pt-br'
+import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome6"
+import moment from "moment"
+import "moment/locale/pt-br"
+
+import common_Styles from "../styles/common_Styles"
 
 export default props => {
-    const date = props.done_at != null ? props.done_at : props.estimate_at
-    const formated_date = moment(date).format('dddd, DD [de] MMMM')
-    // if(props.done_at != null){
-    //     date = props.done_at
-    // }else{
-    //     date = props.estimate_at
-    // }
+
+    const concluido_ou_nao = props.data_conclusao != null ? { textDecorationLine: "line-through" } : {}
+
+    const data = props.data_conclusao ? props.data_conclusao : props.data_estimada
+    const data_formatada = moment(data).locale('pt-br').format('ddd, D [de] MMM')
 
     return (
-        <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={() => props.toggle_task(props.id)}>
-                <View style={styles.checkContainer}>
-                    {get_check_view(props.done_at)}
+        <View style={styles.principal}>
+            <TouchableWithoutFeedback
+            onPress={() => props.alternar_tarefa(props.id) }>
+                <View style={styles.check_principal}>
+                    {get_visualizar_check(props.data_conclusao)}
                 </View>
             </TouchableWithoutFeedback>
             <View>
-                <Text style={styles.desc}>{props.description}</Text>
-                <Text style={styles.date}>{formated_date}</Text>
+                <Text style={[styles.desc, concluido_ou_nao]}>{props.descricao}</Text>
+                <Text style={styles.data}>{data_formatada}</Text>
             </View>
         </View>
     )
 }
 
-function get_check_view(done_at) {
-    if (done_at != null) {
+function get_visualizar_check(data_conclusao) {
+    if (data_conclusao != null) {
         return (
-            <View style={styles.done}>
+            <View style={styles.concluido}>
                 <Icon name="check" size={20} color="#FFF"></Icon>
             </View>
         )
     } else {
         return (
-            <View style={styles.pending}>
+            <View style={styles.pendente}>
 
             </View>
         )
@@ -45,42 +46,40 @@ function get_check_view(done_at) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        borderColor: '#AAA',
+    principal: {
+        flexDirection: "row",
+        borderColor: "#AAA",
         borderBottomWidth: 1,
-        alignItems: 'center',
-        paddingVertical: 20
+        alignItems: "center",
+        paddingVertical: 10
+    },
+    check_principal: {
+        width: "20%",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    pendente: {
+        height: 25,
+        width: 25,
+        borderRadius: 13,
+        borderWidth: 1,
+        borderColor: "#555"
+    },
+    concluido: {
+        height: 25,
+        width: 25,
+        borderRadius: 13,
+        borderWidth: 1,
+        backgroundColor: "#4D7031",
+        alignItems: "center",
+        justifyContent: "center"
     },
     desc: {
-        fontFamily: 'Arial',
-        fontSize: 20,
-        color: '#333'
+        color: common_Styles.colors.main,
+        fontSize: 20
     },
-    date: {
-        fontFamily: 'Arial',
-        color: '#555'
-    },
-    checkContainer: {
-        width: '20%',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    done: {
-        height: 25,
-        width: 25,
-        borderRadius: 13,
-        borderWidth: 1,
-        backgroundColor: '#4D7031',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    pending: {
-        height: 25,
-        width: 25,
-        borderRadius: 13,
-        borderWidth: 1,
-        borderColor: '#555555'
+    data: {
+        color: common_Styles.colors.sub,
     }
 
 })

@@ -1,110 +1,89 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Text, ImageBackground, FlatList, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Text, ImageBackground, FlatList, TouchableOpacity, Platform } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome6"
+
 import moment from "moment"
-import 'moment/locale/pt-br'
 
+import hoje_imagem from "../../assets/imgs/today.jpg"
+import common_Styles from "../styles/common_Styles"
 import Task from "../components/Task"
-
-import today_Image from '../../assets/imgs/today.jpg'
+import "moment/locale/pt-br"
 
 export default class Task_List extends Component {
 
     state = {
-        show_done_task: true,
-        visible_tasks: [],
-        tasks: [{
+        mostra_tarefas_concluidas: true,
+        tarefas_visiveis: [],
+        tarefas: [{
             id: Math.random(),
-            description: "Estudar para prova de DDM I",
-            estimate_at: new Date(),
-            done_at: new Date()
+            descricao: "Comprar jogo GTA 6",
+            data_estimada: new Date(),
+            data_conclusao: new Date()
         },
         {
             id: Math.random(),
-            description: "Fazer a prova de DDM I",
-            estimate_at: moment(new Date()).add(3, "days"),
-            done_at: null
+            descricao: "Jogar GTA 6",
+            data_estimada: moment(new Date()).add(5, "days"),
+            data_conclusao: null
         },
         {
             id: Math.random(),
-            description: "Corriggir a prova de DDM I",
-            estimate_at: moment(new Date()).add(7, "days"),
-            done_at: null
-        },
-        {
-            id: Math.random(),
-            description: "Corriggir a prova de DDM I",
-            estimate_at: moment(new Date()).add(7, "days"),
-            done_at: null
-        },
-        {
-            id: Math.random(),
-            description: "Corriggir a prova de DDM I",
-            estimate_at: moment(new Date()).add(7, "days"),
-            done_at: null
+            descricao: "Levar o carro no mêcanico",
+            data_estimada: moment(new Date()).add(10, "days"),
+            data_conclusao: null
         }]
     }
 
-    toggle_task = task_id => {
-        const tasks = [...this.state.tasks]
-        tasks.forEach(task => {
-            if (task.id === task_id) {
-                task.done_at = task.done_at ? null : new Date()
+    componentDidMount = () => {
+        this.filtro_tarefas()
+    }
+
+    alternar_filtro = () => {
+        this.setState({ mostra_tarefas_concluidas: !this.state.mostra_tarefas_concluidas }, this.filtro_tarefas)
+    }
+
+    filtro_tarefas = () => {
+        let tarefas_visiveis = null
+        if(this.state.mostra_tarefas_concluidas){
+            tarefas_visiveis = [...this.state.tarefas]
+        }else{
+            const pendente = tarefa => tarefa.data_conclusao === null
+            tarefas_visiveis = this.state.tarefas.filter(pendente)
+        }
+
+        this.setState({tarefas_visiveis})
+    }
+
+    alternar_tarefa = task_id => {
+        const tarefas = [...this.state.tarefas]
+        tarefas.forEach(tarefa => {
+            if (tarefa.id === task_id) {
+                tarefa.data_conclusao = tarefa.data_conclusao ? null : new Date()
             }
         })
-        this.setState({ tasks }, this.filter_tasks)
-    }
 
-    filter_tasks = () => {
-        let visible_tasks = null
-        if (this.state.show_done_task) {
-            visible_tasks = [...this.state.tasks]
-        } else {
-            const pending = task => task.done_at === null
-            visible_tasks = this.state.tasks.filter(pending)
-        }
-        this.setState({ visible_tasks })
-    }
-
-    componentDidMount = () =>{
-        this.filter_tasks()
-    }
-
-    toggle_filter = () => {
-        this.setState({show_done_task: !this.state.show_done_task}, this.filter_tasks)
+        this.setState({ tarefas }, this.filtro_tarefas)
     }
 
     render() {
-        const today = moment().locale('pt-br').format('dddd, DD [de] MMMM')
+        const data_hoje = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
-            <View style={styles.container}>
-                <ImageBackground source={today_Image} style={styles.background}>
-                    <View style={styles.iconBar}>
-                        <TouchableOpacity onPress={this.toggle_filter}>
-                            <Icon name={this.state.show_done_task?'eye':'eye-slash'} size={20} color="#FFF"></Icon>
+            <View style={styles.principal}>
+                <ImageBackground source={hoje_imagem} style={styles.fundo}>
+                    <View style={styles.barra_icone}>
+                        <TouchableOpacity onPress={this.alternar_filtro}>
+                            <Icon name={this.state.mostra_tarefas_concluidas ? 'eye' : 'eye-slash'} size={20} color="#FFF"></Icon>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.titleBar}>
-                        <Text style={styles.title}>Hoje</Text>
-                        <Text style={styles.subTitle}>{today}</Text>
+                    <View style={styles.barra_titulo}>
+                        <Text style={styles.titulo}>Hoje</Text>
+                        <Text style={styles.subtitulo}>{data_hoje}</Text>
                     </View>
                 </ImageBackground>
-                <View style={styles.taskList}>
-                    <FlatList
-                        data={this.state.visible_tasks}
+                <View style={styles.lista_tarefas}>
+                    <FlatList data={this.state.tarefas_visiveis}
                         keyExtractor={item => `${item.id}`}
-                        renderItem={({ item }) => <Task{...item} toggle_task={this.toggle_task} />}
-                    />
-                    {/* <Task 
-                        description="Estudar para prova de DDM I"
-                        estimate_at={new Date()}
-                        done_at={new Date()}
-                    />
-                    <Task 
-                        description="Fazer a prova de DDM I"
-                        estimate_at={moment(new Date()).add(5, "days")}
-                        done_at={null}
-                    /> */}
+                        renderItem={({ item }) => <Task{...item} alternar_tarefa={this.alternar_tarefa} />} />
                 </View>
             </View>
         )
@@ -112,37 +91,36 @@ export default class Task_List extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    principal: {
         flex: 1
     },
-    background: {
+    fundo: {
         flex: 3
     },
-    taskList: {
+    lista_tarefas: {
         flex: 7
     },
-    titleBar: {
+    barra_titulo: {
         flex: 1,
         justifyContent: 'flex-end'
     },
-    title: {
-        fontFamily: 'Arial',
+    titulo: {
+        color: common_Styles.colors.secondary,
         fontSize: 50,
-        color: '#FFF',
         marginLeft: 20,
         marginBottom: 20
     },
-    subTitle: {
-        fontFamily: 'Arial',
+    subtitulo: {
+        color: common_Styles.colors.secondary,
         fontSize: 20,
-        color: '#FFF',
         marginLeft: 20,
         marginBottom: 30
     },
-    iconBar: {
+    barra_icone: {
         flexDirection: 'row',
         marginHorizontal: 20,
         marginTop: 50,
         justifyContent: 'flex-end'
-    }
+    },
+
 })
